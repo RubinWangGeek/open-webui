@@ -1,0 +1,285 @@
+<mxfile host="app.diagrams.net" modified="2026-03-04T00:00:00.000Z" agent="Claude" version="21.0.0" type="device">
+
+  <!-- ==================== Sheet 1: Content Pipeline 类图 ==================== -->
+  <diagram id="cls-pipeline" name="ContentPipeline 类图">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="title" value="Content Pipeline — 类图" style="text;html=1;align=center;fontSize=22;fontStyle=1;fillColor=none;strokeColor=none;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="500" y="20" width="350" height="35" as="geometry" />
+        </mxCell>
+
+        <!-- ContentPipeline 主类 -->
+        <mxCell id="cp" value="&lt;b&gt;ContentPipeline&lt;/b&gt;&#xa;─────────────────&#xa;- extractors: dict[SourceType, BaseExtractor]&#xa;- structurer: LLMStructurer&#xa;- enricher: MetadataEnricher&#xa;- chunker: TextChunker&#xa;- embedder: EmbeddingGenerator&#xa;- storage: ContentStore&#xa;- _progress: dict[str, ProcessingProgress]&#xa;─────────────────&#xa;+ process(source, source_type, category, task_id) → ProcessingResult&#xa;+ get_progress(task_id) → ProcessingProgress&#xa;- _update_progress(task_id, status, percent, message)" style="shape=mxgraph.uml25.class;html=1;align=left;spacingLeft=10;spacingRight=4;spacingTop=0;fontSize=13;fillColor=#dae8fc;strokeColor=#6c8ebf;verticalAlign=top;whiteSpace=wrap;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="440" y="70" width="470" height="210" as="geometry" />
+        </mxCell>
+
+        <!-- BaseExtractor -->
+        <mxCell id="be" value="&lt;b&gt;«abstract»&lt;/b&gt;&#xa;&lt;b&gt;BaseExtractor&lt;/b&gt;&#xa;─────────────────&#xa;+ extract(source) → ExtractedContent «abstract»&#xa;+ validate_source(source) → bool" style="shape=mxgraph.uml25.class;html=1;align=left;spacingLeft=10;spacingRight=4;spacingTop=0;fontSize=13;fillColor=#fff2cc;strokeColor=#d6b656;verticalAlign=top;whiteSpace=wrap;fontStyle=0;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="80" y="360" width="320" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- PDFExtractor -->
+        <mxCell id="pe" value="&lt;b&gt;PDFExtractor&lt;/b&gt;&#xa;─────────────────&#xa;+ extract(source) → ExtractedContent&#xa;  使用 pdfplumber 逐页提取" style="shape=mxgraph.uml25.class;html=1;align=left;spacingLeft=10;spacingRight=4;spacingTop=0;fontSize=12;fillColor=#FFF8E6;strokeColor=#d6b656;verticalAlign=top;whiteSpace=wrap;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="40" y="530" width="230" height="80" as="geometry" />
+        </mxCell>
+        <!-- TextExtractor -->
+        <mxCell id="te" value="&lt;b&gt;TextExtractor&lt;/b&gt;&#xa;─────────────────&#xa;+ extract(source) → ExtractedContent&#xa;  直接读取 .txt/.md" style="shape=mxgraph.uml25.class;html=1;align=left;spacingLeft=10;spacingRight=4;spacingTop=0;fontSize=12;fillColor=#FFF8E6;strokeColor=#d6b656;verticalAlign=top;whiteSpace=wrap;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="290" y="530" width="220" height="80" as="geometry" />
+        </mxCell>
+        <!-- AudioExtractor -->
+        <mxCell id="ae" value="&lt;b&gt;AudioExtractor&lt;/b&gt;&#xa;─────────────────&#xa;- transcriber: WhisperTranscriber&#xa;+ extract(source) → ExtractedContent" style="shape=mxgraph.uml25.class;html=1;align=left;spacingLeft=10;spacingRight=4;spacingTop=0;fontSize=12;fillColor=#FFF8E6;strokeColor=#d6b656;verticalAlign=top;whiteSpace=wrap;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="530" y="530" width="230" height="80" as="geometry" />
+        </mxCell>
+        <!-- VideoExtractor -->
+        <mxCell id="ve" value="&lt;b&gt;VideoExtractor&lt;/b&gt;&#xa;─────────────────&#xa;- downloader: VideoDownloader&#xa;- transcriber: WhisperTranscriber&#xa;+ extract(source) → ExtractedContent&#xa;  下载 → 提取音轨 → 转录" style="shape=mxgraph.uml25.class;html=1;align=left;spacingLeft=10;spacingRight=4;spacingTop=0;fontSize=12;fillColor=#FFF8E6;strokeColor=#d6b656;verticalAlign=top;whiteSpace=wrap;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="780" y="530" width="250" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- 继承箭头 -->
+        <mxCell id="inh1" style="endArrow=block;endFill=0;edgeStyle=orthogonalEdgeStyle;strokeColor=#666;" edge="1" source="pe" target="be" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="inh2" style="endArrow=block;endFill=0;edgeStyle=orthogonalEdgeStyle;strokeColor=#666;" edge="1" source="te" target="be" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="inh3" style="endArrow=block;endFill=0;edgeStyle=orthogonalEdgeStyle;strokeColor=#666;" edge="1" source="ae" target="be" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="inh4" style="endArrow=block;endFill=0;edgeStyle=orthogonalEdgeStyle;strokeColor=#666;" edge="1" source="ve" target="be" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- VideoDownloader -->
+        <mxCell id="vd" value="&lt;b&gt;VideoDownloader&lt;/b&gt;&#xa;─────────────────&#xa;- output_dir: Path&#xa;─────────────────&#xa;+ download(url, audio_only) → DownloadResult&#xa;  基于 yt-dlp" style="shape=mxgraph.uml25.class;html=1;align=left;spacingLeft=10;spacingRight=4;spacingTop=0;fontSize=12;fillColor=#f8cecc;strokeColor=#b85450;verticalAlign=top;whiteSpace=wrap;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="530" width="280" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- WhisperTranscriber -->
+        <mxCell id="wt" value="&lt;b&gt;WhisperTranscriber&lt;/b&gt;&#xa;─────────────────&#xa;- _model: WhisperModel (懒加载)&#xa;─────────────────&#xa;+ transcribe(audio_path, language) → TranscriptResult&#xa;  基于 faster-whisper" style="shape=mxgraph.uml25.class;html=1;align=left;spacingLeft=10;spacingRight=4;spacingTop=0;fontSize=12;fillColor=#f8cecc;strokeColor=#b85450;verticalAlign=top;whiteSpace=wrap;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="660" width="300" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- LLMStructurer -->
+        <mxCell id="ls" value="&lt;b&gt;LLMStructurer&lt;/b&gt;&#xa;─────────────────&#xa;- _processors: dict[str, BaseProcessor]&#xa;─────────────────&#xa;+ structure(raw_text, category, metadata) → StructuredContent&#xa;+ register_processor(category, processor)&#xa;- _process_long_text(processor, text, metadata)" style="shape=mxgraph.uml25.class;html=1;align=left;spacingLeft=10;spacingRight=4;spacingTop=0;fontSize=12;fillColor=#e1d5e7;strokeColor=#9673a6;verticalAlign=top;whiteSpace=wrap;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="440" y="360" width="370" height="120" as="geometry" />
+        </mxCell>
+
+        <!-- BaseProcessor -->
+        <mxCell id="bp" value="&lt;b&gt;«abstract» BaseProcessor&lt;/b&gt;&#xa;─────────────────&#xa;- llm: ChatOpenAI&#xa;─────────────────&#xa;+ analysis_prompt → str «abstract property»&#xa;+ process(text, metadata) → StructuredContent&#xa;- _parse_json(text) → dict" style="shape=mxgraph.uml25.class;html=1;align=left;spacingLeft=10;spacingRight=4;spacingTop=0;fontSize=12;fillColor=#e1d5e7;strokeColor=#9673a6;verticalAlign=top;whiteSpace=wrap;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="440" y="700" width="310" height="120" as="geometry" />
+        </mxCell>
+
+        <!-- GenericProcessor -->
+        <mxCell id="gp" value="&lt;b&gt;GenericProcessor&lt;/b&gt;" style="shape=mxgraph.uml25.class;html=1;align=left;spacingLeft=10;fontSize=12;fillColor=#F3E8FF;strokeColor=#9673a6;verticalAlign=top;whiteSpace=wrap;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="300" y="880" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="fpp" value="&lt;b&gt;FirstPrinciplesProcessor&lt;/b&gt;" style="shape=mxgraph.uml25.class;html=1;align=left;spacingLeft=10;fontSize=12;fillColor=#F3E8FF;strokeColor=#9673a6;verticalAlign=top;whiteSpace=wrap;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="470" y="880" width="180" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="gtp" value="&lt;b&gt;GameTheoryProcessor&lt;/b&gt;" style="shape=mxgraph.uml25.class;html=1;align=left;spacingLeft=10;fontSize=12;fillColor=#F3E8FF;strokeColor=#9673a6;verticalAlign=top;whiteSpace=wrap;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="680" y="880" width="160" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- 继承 Processor -->
+        <mxCell id="pinh1" style="endArrow=block;endFill=0;edgeStyle=orthogonalEdgeStyle;strokeColor=#666;" edge="1" source="gp" target="bp" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pinh2" style="endArrow=block;endFill=0;edgeStyle=orthogonalEdgeStyle;strokeColor=#666;" edge="1" source="fpp" target="bp" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pinh3" style="endArrow=block;endFill=0;edgeStyle=orthogonalEdgeStyle;strokeColor=#666;" edge="1" source="gtp" target="bp" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 组合关系 -->
+        <mxCell id="comp1" value="1" style="endArrow=diamondThin;endFill=1;edgeStyle=orthogonalEdgeStyle;strokeColor=#333;fontColor=#333333;" edge="1" source="be" target="cp" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="comp2" value="1" style="endArrow=diamondThin;endFill=1;edgeStyle=orthogonalEdgeStyle;strokeColor=#333;fontColor=#333333;" edge="1" source="ls" target="cp" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- MetadataEnricher -->
+        <mxCell id="me" value="&lt;b&gt;MetadataEnricher&lt;/b&gt;&#xa;─────────────────&#xa;+ enrich(structured, source_meta) → EnrichedMetadata&#xa;  生成 source_id / topics / skills / credibility" style="shape=mxgraph.uml25.class;html=1;align=left;spacingLeft=10;spacingRight=4;spacingTop=0;fontSize=12;fillColor=#d5e8d4;strokeColor=#82b366;verticalAlign=top;whiteSpace=wrap;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="860" y="360" width="340" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- 使用关系 -->
+        <mxCell id="use-ve-vd" value="uses" style="endArrow=open;dashed=1;strokeColor=#999;fontSize=12;fontColor=#333333;" edge="1" source="ve" target="vd" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="use-ve-wt" value="uses" style="endArrow=open;dashed=1;strokeColor=#999;fontSize=12;fontColor=#333333;" edge="1" source="ae" target="wt" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="use-ls-bp" value="dispatches to" style="endArrow=open;dashed=1;strokeColor=#999;fontSize=12;fontColor=#333333;" edge="1" source="ls" target="bp" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+
+  <!-- ==================== Sheet 2: Skills 体系类图 ==================== -->
+  <diagram id="cls-skills" name="Skills 体系类图">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="800" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="title" value="Skills 体系 — 类图" style="text;html=1;align=center;fontSize=22;fontStyle=1;fillColor=none;strokeColor=none;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="500" y="20" width="300" height="35" as="geometry" />
+        </mxCell>
+
+        <!-- SkillRegistry -->
+        <mxCell id="sr" value="&lt;b&gt;SkillRegistry&lt;/b&gt;&#xa;─────────────────&#xa;- skills_dir: Path&#xa;- _skills: dict[str, SkillManifest]&#xa;─────────────────&#xa;+ list_skills() → list[SkillManifest]&#xa;+ get_skill(skill_id) → SkillManifest&#xa;+ get_skill_ids() → list[str]&#xa;+ get_skills_summary() → str&#xa;- _load_all()" style="shape=mxgraph.uml25.class;html=1;align=left;spacingLeft=10;spacingRight=4;spacingTop=0;fontSize=13;fillColor=#dae8fc;strokeColor=#6c8ebf;verticalAlign=top;whiteSpace=wrap;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="80" y="80" width="320" height="180" as="geometry" />
+        </mxCell>
+
+        <!-- SkillManifest (数据类) -->
+        <mxCell id="sm" value="&lt;b&gt;SkillManifest&lt;/b&gt; (Pydantic)&#xa;─────────────────&#xa;+ skill_id: str&#xa;+ version: str&#xa;+ name: str&#xa;+ purpose: str&#xa;+ category: str&#xa;+ inputs: list[InputDef]&#xa;+ outputs: list[OutputDef]&#xa;+ retrieval_policy: RetrievalPolicy&#xa;+ quality_checks: QualityChecks&#xa;+ reference_dirs: list[str]&#xa;+ base_dir: str" style="shape=mxgraph.uml25.class;html=1;align=left;spacingLeft=10;spacingRight=4;spacingTop=0;fontSize=13;fillColor=#d5e8d4;strokeColor=#82b366;verticalAlign=top;whiteSpace=wrap;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="500" y="80" width="280" height="220" as="geometry" />
+        </mxCell>
+
+        <!-- SkillExecutor -->
+        <mxCell id="se" value="&lt;b&gt;SkillExecutor&lt;/b&gt;&#xa;─────────────────&#xa;- registry: SkillRegistry&#xa;- retriever: KnowledgeRetriever&#xa;- llm: ChatOpenAI&#xa;─────────────────&#xa;+ execute(skill_id, inputs, retrieval_results) → SkillOutput&#xa;- _load_prompt(manifest) → str&#xa;- _load_schema(manifest) → dict&#xa;- _load_references(manifest) → str&#xa;- _parse_json(text) → dict" style="shape=mxgraph.uml25.class;html=1;align=left;spacingLeft=10;spacingRight=4;spacingTop=0;fontSize=13;fillColor=#dae8fc;strokeColor=#6c8ebf;verticalAlign=top;whiteSpace=wrap;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="80" y="350" width="380" height="200" as="geometry" />
+        </mxCell>
+
+        <!-- SkillOutput -->
+        <mxCell id="so" value="&lt;b&gt;SkillOutput&lt;/b&gt; (Pydantic)&#xa;─────────────────&#xa;+ skill_id: str&#xa;+ result: dict&#xa;+ raw_response: str&#xa;+ citations: list[Citation]" style="shape=mxgraph.uml25.class;html=1;align=left;spacingLeft=10;spacingRight=4;spacingTop=0;fontSize=13;fillColor=#d5e8d4;strokeColor=#82b366;verticalAlign=top;whiteSpace=wrap;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="560" y="400" width="250" height="120" as="geometry" />
+        </mxCell>
+
+        <!-- Skill 文件结构 -->
+        <mxCell id="skill-files" value="Skill 目录结构&#xa;─────────────────&#xa;skills/{skill_id}/&#xa;  ├── manifest.yaml&#xa;  ├── prompt.md&#xa;  ├── schema.json&#xa;  └── tests/&#xa;      └── test_case_01.json" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;size=14;fillColor=#ffffcc;strokeColor=#d6b656;fontSize=12;align=left;spacingLeft=8;verticalAlign=top;spacingTop=18;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="900" y="80" width="200" height="150" as="geometry" />
+        </mxCell>
+
+        <!-- KnowledgeRetriever -->
+        <mxCell id="kr" value="&lt;b&gt;KnowledgeRetriever&lt;/b&gt;&#xa;─────────────────&#xa;- vector_store: ChromaVectorStore&#xa;- embedder: EmbeddingGenerator&#xa;─────────────────&#xa;+ retrieve(query, category, top_k) → list[RetrievalResult]&#xa;+ retrieve_with_citations(...) → tuple" style="shape=mxgraph.uml25.class;html=1;align=left;spacingLeft=10;spacingRight=4;spacingTop=0;fontSize=12;fillColor=#e1d5e7;strokeColor=#9673a6;verticalAlign=top;whiteSpace=wrap;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="560" y="570" width="360" height="130" as="geometry" />
+        </mxCell>
+
+        <!-- 关联 -->
+        <mxCell id="rel1" value="1..*" style="endArrow=open;strokeColor=#333;fontSize=12;fontColor=#333333;" edge="1" source="sr" target="sm" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel2" value="uses" style="endArrow=open;dashed=1;strokeColor=#999;fontSize=12;fontColor=#333333;" edge="1" source="se" target="sr" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel3" value="uses" style="endArrow=open;dashed=1;strokeColor=#999;fontSize=12;fontColor=#333333;" edge="1" source="se" target="kr" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel4" value="produces" style="endArrow=open;dashed=1;strokeColor=#82b366;fontSize=12;fontColor=#333333;" edge="1" source="se" target="so" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+
+  <!-- ==================== Sheet 3: 数据模型关系图 ==================== -->
+  <diagram id="cls-models" name="数据模型关系图">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="title" value="核心数据模型关系图" style="text;html=1;align=center;fontSize=22;fontStyle=1;fillColor=none;strokeColor=none;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="450" y="20" width="300" height="35" as="geometry" />
+        </mxCell>
+
+        <!-- ExtractedContent -->
+        <mxCell id="ec" value="&lt;b&gt;ExtractedContent&lt;/b&gt;&#xa;────────────&#xa;text: str&#xa;metadata: dict&#xa;raw_path: str" style="shape=mxgraph.uml25.class;html=1;align=left;spacingLeft=10;fontSize=12;fillColor=#fff2cc;strokeColor=#d6b656;verticalAlign=top;whiteSpace=wrap;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="80" y="80" width="180" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- StructuredContent -->
+        <mxCell id="sc" value="&lt;b&gt;StructuredContent&lt;/b&gt;&#xa;────────────&#xa;concepts: list[Concept]&#xa;methodology: Methodology | None&#xa;examples: list[Example]&#xa;key_quotes: list[Quote]&#xa;summary: str" style="shape=mxgraph.uml25.class;html=1;align=left;spacingLeft=10;fontSize=12;fillColor=#d5e8d4;strokeColor=#82b366;verticalAlign=top;whiteSpace=wrap;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="350" y="80" width="240" height="130" as="geometry" />
+        </mxCell>
+
+        <!-- Concept -->
+        <mxCell id="con" value="&lt;b&gt;Concept&lt;/b&gt;&#xa;────────────&#xa;name: str&#xa;definition: str&#xa;source_chunk_id: str" style="shape=mxgraph.uml25.class;html=1;align=left;spacingLeft=10;fontSize=12;fillColor=#EBF5EB;strokeColor=#82b366;verticalAlign=top;whiteSpace=wrap;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="200" y="270" width="160" height="90" as="geometry" />
+        </mxCell>
+
+        <!-- Methodology -->
+        <mxCell id="meth" value="&lt;b&gt;Methodology&lt;/b&gt;&#xa;────────────&#xa;name: str&#xa;steps: list[MethodologyStep]&#xa;source_chunk_id: str" style="shape=mxgraph.uml25.class;html=1;align=left;spacingLeft=10;fontSize=12;fillColor=#EBF5EB;strokeColor=#82b366;verticalAlign=top;whiteSpace=wrap;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="390" y="270" width="200" height="90" as="geometry" />
+        </mxCell>
+
+        <!-- Example -->
+        <mxCell id="ex" value="&lt;b&gt;Example&lt;/b&gt;&#xa;────────────&#xa;title: str&#xa;background: str&#xa;application: str&#xa;outcome: str&#xa;source_chunk_id: str" style="shape=mxgraph.uml25.class;html=1;align=left;spacingLeft=10;fontSize=12;fillColor=#EBF5EB;strokeColor=#82b366;verticalAlign=top;whiteSpace=wrap;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="200" y="400" width="160" height="130" as="geometry" />
+        </mxCell>
+
+        <!-- Quote -->
+        <mxCell id="qt" value="&lt;b&gt;Quote&lt;/b&gt;&#xa;────────────&#xa;text: str&#xa;importance: str&#xa;source_chunk_id: str&#xa;timestamp: str | None" style="shape=mxgraph.uml25.class;html=1;align=left;spacingLeft=10;fontSize=12;fillColor=#EBF5EB;strokeColor=#82b366;verticalAlign=top;whiteSpace=wrap;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="390" y="400" width="180" height="110" as="geometry" />
+        </mxCell>
+
+        <!-- EnrichedMetadata -->
+        <mxCell id="em" value="&lt;b&gt;EnrichedMetadata&lt;/b&gt;&#xa;────────────&#xa;source_id: str&#xa;source_type: SourceType&#xa;source_url: str | None&#xa;title: str&#xa;author: str | None&#xa;created_at: datetime&#xa;topics: list[str]&#xa;applicable_skills: list[str]&#xa;credibility: str&#xa;language: str&#xa;content_category: str" style="shape=mxgraph.uml25.class;html=1;align=left;spacingLeft=10;fontSize=12;fillColor=#dae8fc;strokeColor=#6c8ebf;verticalAlign=top;whiteSpace=wrap;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="700" y="80" width="210" height="210" as="geometry" />
+        </mxCell>
+
+        <!-- ProcessingResult -->
+        <mxCell id="pr" value="&lt;b&gt;ProcessingResult&lt;/b&gt;&#xa;────────────&#xa;task_id: str&#xa;source_id: str&#xa;status: str&#xa;structured_content: StructuredContent&#xa;metadata: EnrichedMetadata&#xa;markdown_path: str&#xa;json_path: str&#xa;chunks_count: int&#xa;processing_time: float" style="shape=mxgraph.uml25.class;html=1;align=left;spacingLeft=10;fontSize=12;fillColor=#f8cecc;strokeColor=#b85450;verticalAlign=top;whiteSpace=wrap;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="80" width="250" height="180" as="geometry" />
+        </mxCell>
+
+        <!-- Chunk -->
+        <mxCell id="ch" value="&lt;b&gt;Chunk&lt;/b&gt;&#xa;────────────&#xa;chunk_id: str&#xa;text: str&#xa;source_id: str&#xa;chunk_index: int&#xa;start_char: int&#xa;end_char: int&#xa;metadata: dict" style="shape=mxgraph.uml25.class;html=1;align=left;spacingLeft=10;fontSize=12;fillColor=#e1d5e7;strokeColor=#9673a6;verticalAlign=top;whiteSpace=wrap;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="700" y="370" width="160" height="140" as="geometry" />
+        </mxCell>
+
+        <!-- RetrievalResult -->
+        <mxCell id="rr" value="&lt;b&gt;RetrievalResult&lt;/b&gt;&#xa;────────────&#xa;chunk_id: str&#xa;text: str&#xa;source_id: str&#xa;score: float&#xa;metadata: dict" style="shape=mxgraph.uml25.class;html=1;align=left;spacingLeft=10;fontSize=12;fillColor=#e1d5e7;strokeColor=#9673a6;verticalAlign=top;whiteSpace=wrap;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="910" y="370" width="160" height="120" as="geometry" />
+        </mxCell>
+
+        <!-- Citation -->
+        <mxCell id="ci" value="&lt;b&gt;Citation&lt;/b&gt;&#xa;────────────&#xa;source_id: str&#xa;chunk_id: str&#xa;quote_hint: str" style="shape=mxgraph.uml25.class;html=1;align=left;spacingLeft=10;fontSize=12;fillColor=#e1d5e7;strokeColor=#9673a6;verticalAlign=top;whiteSpace=wrap;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="1110" y="370" width="150" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- 关系箭头 -->
+        <mxCell id="r1" value="contains" style="endArrow=open;strokeColor=#333;fontSize=11;fontColor=#333333;" edge="1" source="sc" target="con" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r2" value="contains" style="endArrow=open;strokeColor=#333;fontSize=11;fontColor=#333333;" edge="1" source="sc" target="meth" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r3" value="contains" style="endArrow=open;strokeColor=#333;fontSize=11;fontColor=#333333;" edge="1" source="sc" target="ex" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r4" value="contains" style="endArrow=open;strokeColor=#333;fontSize=11;fontColor=#333333;" edge="1" source="sc" target="qt" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r5" style="endArrow=open;strokeColor=#333;fontSize=11;" edge="1" source="pr" target="sc" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r6" style="endArrow=open;strokeColor=#333;fontSize=11;" edge="1" source="pr" target="em" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r7" value="splits into" style="endArrow=open;dashed=1;strokeColor=#999;fontSize=11;fontColor=#333333;" edge="1" source="ec" target="ch" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r8" value="retrieved as" style="endArrow=open;dashed=1;strokeColor=#999;fontSize=11;fontColor=#333333;" edge="1" source="ch" target="rr" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r9" value="generates" style="endArrow=open;dashed=1;strokeColor=#999;fontSize=11;fontColor=#333333;" edge="1" source="rr" target="ci" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r10" value="produces" style="endArrow=open;dashed=1;strokeColor=#82b366;fontSize=11;fontColor=#333333;" edge="1" source="ec" target="sc" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

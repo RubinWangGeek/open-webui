@@ -1,0 +1,310 @@
+<mxfile host="app.diagrams.net" modified="2026-03-04T00:00:00.000Z" agent="Claude" version="21.0.0" type="device">
+  <diagram id="seq-chat" name="聊天对话时序">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- 标题 -->
+        <mxCell id="title" value="时序图 A：聊天对话流程 (Chat Completions)" style="text;html=1;align=center;fontSize=22;fontStyle=1;fillColor=none;strokeColor=none;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="350" y="20" width="500" height="35" as="geometry" />
+        </mxCell>
+
+        <!-- 参与者 (Lifelines) -->
+        <mxCell id="user" value="👤 用户" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};size=40;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="80" y="70" width="100" height="1050" as="geometry" />
+        </mxCell>
+        <mxCell id="owui" value="Open WebUI" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};size=40;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="280" y="70" width="100" height="1050" as="geometry" />
+        </mxCell>
+        <mxCell id="api" value="agent-core&#xa;(FastAPI)" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};size=40;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="480" y="70" width="100" height="1050" as="geometry" />
+        </mxCell>
+        <mxCell id="graph" value="LangGraph&#xa;Agent" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};size=40;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="680" y="70" width="100" height="1050" as="geometry" />
+        </mxCell>
+        <mxCell id="llm" value="☁️ LLM&#xa;(GPT-4o)" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};size=40;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="880" y="70" width="100" height="1050" as="geometry" />
+        </mxCell>
+        <mxCell id="chroma" value="🔍 Chroma&#xa;向量库" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};size=40;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="1080" y="70" width="100" height="1050" as="geometry" />
+        </mxCell>
+
+        <!-- 消息 1: 用户输入 -->
+        <mxCell id="m1" value="输入问题" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeColor=#333;fontSize=13;fontColor=#333333;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="130" y="160" as="sourcePoint" />
+            <mxPoint x="330" y="160" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 消息 2: Open WebUI → agent-core -->
+        <mxCell id="m2" value="POST /v1/chat/completions&#xa;{ messages, model: &quot;agent-core&quot; }" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeColor=#333;fontSize=12;fontColor=#333333;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="330" y="200" as="sourcePoint" />
+            <mxPoint x="530" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 消息 3: agent-core → LangGraph -->
+        <mxCell id="m3" value="agent_graph.ainvoke(initial_state)" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeColor=#333;fontSize=12;fontColor=#333333;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="530" y="240" as="sourcePoint" />
+            <mxPoint x="730" y="240" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Intake -->
+        <mxCell id="m4" value="[Intake] 理解意图" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeColor=#6c8ebf;fontSize=12;fontColor=#333333;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="730" y="290" as="sourcePoint" />
+            <mxPoint x="930" y="290" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m4r" value="{ intent, intent_detail }" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeColor=#6c8ebf;fontSize=12;fontColor=#333333;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="930" y="320" as="sourcePoint" />
+            <mxPoint x="730" y="320" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Route -->
+        <mxCell id="m5" value="[Route] 选择 Skill" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeColor=#6c8ebf;fontSize=12;fontColor=#333333;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="730" y="370" as="sourcePoint" />
+            <mxPoint x="930" y="370" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m5r" value="{ skill_plan, needs_askback }" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeColor=#6c8ebf;fontSize=12;fontColor=#333333;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="930" y="400" as="sourcePoint" />
+            <mxPoint x="730" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Retrieve -->
+        <mxCell id="m6" value="[Retrieve] 向量检索" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeColor=#82b366;fontSize=12;fontColor=#333333;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="730" y="450" as="sourcePoint" />
+            <mxPoint x="1130" y="450" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m6r" value="retrieval_results[] + citations[]" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeColor=#82b366;fontSize=12;fontColor=#333333;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1130" y="480" as="sourcePoint" />
+            <mxPoint x="730" y="480" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Execute -->
+        <mxCell id="m7" value="[Execute] 执行 Skill&#xa;注入 retrieval context + references" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeColor=#82b366;fontSize=12;fontColor=#333333;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="730" y="530" as="sourcePoint" />
+            <mxPoint x="930" y="530" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m7r" value="skill_outputs[] (JSON)" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeColor=#82b366;fontSize=12;fontColor=#333333;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="930" y="570" as="sourcePoint" />
+            <mxPoint x="730" y="570" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- SelfCheck -->
+        <mxCell id="m8" value="[SelfCheck] 质量检查" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeColor=#b85450;fontSize=12;fontColor=#333333;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="730" y="620" as="sourcePoint" />
+            <mxPoint x="930" y="620" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m8r" value="{ passed, feedback }" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeColor=#b85450;fontSize=12;fontColor=#333333;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="930" y="650" as="sourcePoint" />
+            <mxPoint x="730" y="650" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Finalize -->
+        <mxCell id="m9-note" value="[Finalize] 汇总 Markdown + citations" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;size=14;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="690" y="680" width="220" height="35" as="geometry" />
+        </mxCell>
+
+        <!-- 返回: LangGraph → agent-core -->
+        <mxCell id="m10" value="final_state (AgentState)" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeColor=#333;fontSize=12;fontColor=#333333;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="730" y="750" as="sourcePoint" />
+            <mxPoint x="530" y="750" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 返回: agent-core → Open WebUI -->
+        <mxCell id="m11" value="ChatCompletionResponse&#xa;{ choices[].message.content,&#xa;  metadata.citations }" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeColor=#333;fontSize=12;fontColor=#333333;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="530" y="800" as="sourcePoint" />
+            <mxPoint x="330" y="800" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 返回: Open WebUI → 用户 -->
+        <mxCell id="m12" value="展示回答 + Citations" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeColor=#333;fontSize=12;fontColor=#333333;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="330" y="850" as="sourcePoint" />
+            <mxPoint x="130" y="850" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+
+  <diagram id="seq-content" name="内容处理时序">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- 标题 -->
+        <mxCell id="title2" value="时序图 B：内容处理流程 (Content Processing)" style="text;html=1;align=center;fontSize=22;fontStyle=1;fillColor=none;strokeColor=none;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="350" y="20" width="500" height="35" as="geometry" />
+        </mxCell>
+
+        <!-- 参与者 -->
+        <mxCell id="c-user" value="👤 用户" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;size=40;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="80" y="70" width="100" height="950" as="geometry" />
+        </mxCell>
+        <mxCell id="c-owui" value="Open WebUI&#xa;知识库页面" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;size=40;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="280" y="70" width="100" height="950" as="geometry" />
+        </mxCell>
+        <mxCell id="c-api" value="agent-core&#xa;API" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;size=40;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="480" y="70" width="100" height="950" as="geometry" />
+        </mxCell>
+        <mxCell id="c-pipeline" value="Content&#xa;Pipeline" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;size=40;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="680" y="70" width="100" height="950" as="geometry" />
+        </mxCell>
+        <mxCell id="c-llm" value="☁️ LLM" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;size=40;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="880" y="70" width="100" height="950" as="geometry" />
+        </mxCell>
+        <mxCell id="c-store" value="Storage&#xa;层" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;size=40;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="1080" y="70" width="100" height="950" as="geometry" />
+        </mxCell>
+
+        <!-- 上传 -->
+        <mxCell id="cm1" value="拖拽上传 PDF / 输入视频 URL" style="html=1;verticalAlign=bottom;endArrow=block;strokeColor=#333;fontSize=12;fontColor=#333333;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="130" y="160" as="sourcePoint" />
+            <mxPoint x="330" y="160" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="cm2" value="POST /v1/content/process&#xa;{ file/url, source_type, category }" style="html=1;verticalAlign=bottom;endArrow=block;strokeColor=#333;fontSize=12;fontColor=#333333;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="330" y="200" as="sourcePoint" />
+            <mxPoint x="530" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="cm2r" value="{ task_id, status: pending }" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;strokeColor=#333;fontSize=12;fontColor=#333333;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="530" y="230" as="sourcePoint" />
+            <mxPoint x="330" y="230" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 异步处理开始 -->
+        <mxCell id="cm3" value="BackgroundTask: pipeline.process()" style="html=1;verticalAlign=bottom;endArrow=block;strokeColor=#d6b656;fontSize=12;fontColor=#333333;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="530" y="270" as="sourcePoint" />
+            <mxPoint x="730" y="270" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Extract -->
+        <mxCell id="cm4-note" value="Step 1: Extract" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;size=14;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="690" y="300" width="100" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Structure -->
+        <mxCell id="cm5" value="Step 2: Structure (LLM 调用)" style="html=1;verticalAlign=bottom;endArrow=block;strokeColor=#b85450;fontSize=12;fontColor=#333333;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="730" y="370" as="sourcePoint" />
+            <mxPoint x="930" y="370" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cm5r" value="StructuredContent (JSON)" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;strokeColor=#b85450;fontSize=12;fontColor=#333333;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="930" y="410" as="sourcePoint" />
+            <mxPoint x="730" y="410" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Enrich + Chunk + Embed -->
+        <mxCell id="cm6-note" value="Step 3-5: Enrich → Chunk → Embed" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;size=14;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="690" y="440" width="200" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Store -->
+        <mxCell id="cm7" value="Step 6: Store (raw + JSON + MD + vector)" style="html=1;verticalAlign=bottom;endArrow=block;strokeColor=#9673a6;fontSize=12;fontColor=#333333;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="730" y="510" as="sourcePoint" />
+            <mxPoint x="1130" y="510" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cm7r" value="StoreResult" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;strokeColor=#9673a6;fontSize=12;fontColor=#333333;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1130" y="540" as="sourcePoint" />
+            <mxPoint x="730" y="540" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 轮询进度 (loop) -->
+        <mxCell id="loop-bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0f0f0;strokeColor=#999;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="250" y="580" width="330" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="loop-label" value="loop [每 2 秒轮询]" style="text;html=1;fontSize=12;fontStyle=3;fillColor=none;strokeColor=none;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="260" y="583" width="120" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="cm8" value="GET /v1/content/progress/{task_id}" style="html=1;verticalAlign=bottom;endArrow=block;strokeColor=#666;fontSize=12;fontColor=#333333;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="330" y="620" as="sourcePoint" />
+            <mxPoint x="530" y="620" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cm8r" value="{ status, progress_percent, message }" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;strokeColor=#666;fontSize=12;fontColor=#333333;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="530" y="650" as="sourcePoint" />
+            <mxPoint x="330" y="650" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cm9" value="更新进度条 UI" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;strokeColor=#666;fontSize=12;fontColor=#333333;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="330" y="690" as="sourcePoint" />
+            <mxPoint x="130" y="690" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 完成 -->
+        <mxCell id="cm10" value="GET /v1/content/result/{task_id}" style="html=1;verticalAlign=bottom;endArrow=block;strokeColor=#333;fontSize=12;fontColor=#333333;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="330" y="780" as="sourcePoint" />
+            <mxPoint x="530" y="780" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cm10r" value="ProcessingResult&#xa;{ structured_content, metadata, paths }" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;strokeColor=#333;fontSize=12;fontColor=#333333;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="530" y="820" as="sourcePoint" />
+            <mxPoint x="330" y="820" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="cm11" value="展示处理结果&#xa;(结构化内容 + Markdown 预览)" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;strokeColor=#333;fontSize=12;fontColor=#333333;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="330" y="870" as="sourcePoint" />
+            <mxPoint x="130" y="870" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

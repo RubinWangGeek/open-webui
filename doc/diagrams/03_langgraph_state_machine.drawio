@@ -1,0 +1,176 @@
+<mxfile host="app.diagrams.net" modified="2026-03-04T00:00:00.000Z" agent="Claude" version="21.0.0" type="device">
+  <diagram id="langgraph-sm" name="LangGraph Agent 状态机">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- 标题 -->
+        <mxCell id="title" value="LangGraph Agent 状态机 — 节点与条件分支" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=22;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="400" y="20" width="450" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- START -->
+        <mxCell id="start" value="" style="ellipse;whiteSpace=wrap;html=1;fillColor=#333;strokeColor=#333;" vertex="1" parent="1">
+          <mxGeometry x="600" y="80" width="30" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- ========== INTAKE ========== -->
+        <mxCell id="intake" value="INTAKE&#xa;意图理解" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="540" y="140" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="intake-desc" value="• 使用 LLM 分析用户问题&#xa;• 输出 intent 分类:&#xa;  skill_request | knowledge_query&#xa;  | general_chat | unclear&#xa;• 输出 intent_detail 描述" style="text;html=1;align=left;fontSize=13;fillColor=#f0f4ff;strokeColor=#ddd;rounded=1;spacingLeft=6;spacingTop=3;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="740" y="120" width="230" height="85" as="geometry" />
+        </mxCell>
+
+        <!-- ========== ROUTE ========== -->
+        <mxCell id="route" value="ROUTE&#xa;Skill 路由" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="540" y="250" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="route-desc" value="• 获取所有 Skill 摘要列表&#xa;• LLM 判断使用哪些 Skill&#xa;• 判断是否需要追问&#xa;• 输出 skill_plan[]&#xa;• 输出 needs_askback" style="text;html=1;align=left;fontSize=13;fillColor=#f0f4ff;strokeColor=#ddd;rounded=1;spacingLeft=6;spacingTop=3;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="740" y="235" width="220" height="85" as="geometry" />
+        </mxCell>
+
+        <!-- 条件分支: 是否追问 -->
+        <mxCell id="cond-askback" value="needs_askback?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="545" y="360" width="140" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- ========== ASKBACK ========== -->
+        <mxCell id="askback" value="ASKBACK&#xa;追问用户" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="250" y="370" width="150" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="askback-desc" value="• 生成追问问题列表&#xa;• 中断 Graph 执行&#xa;• 等待用户回复后重新进入" style="text;html=1;align=left;fontSize=13;fillColor=#fffbeb;strokeColor=#ddd;rounded=1;spacingLeft=6;spacingTop=3;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="80" y="350" width="220" height="55" as="geometry" />
+        </mxCell>
+
+        <!-- 用户回复 -->
+        <mxCell id="user-reply" value="&#x1f464; 用户回复" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=13;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="250" y="460" width="150" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- END (askback) -->
+        <mxCell id="end-askback" value="END&#xa;(返回追问)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=13;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="100" y="460" width="90" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- ========== RETRIEVE ========== -->
+        <mxCell id="retrieve" value="RETRIEVE&#xa;RAG 检索" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="540" y="480" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="retrieve-desc" value="• 根据 query + skill 的 retrieval_policy&#xa;• 生成 query embedding&#xa;• Chroma 向量检索 (top_k)&#xa;• 按 category 过滤&#xa;• 生成 citations 列表" style="text;html=1;align=left;fontSize=13;fillColor=#f0fff0;strokeColor=#ddd;rounded=1;spacingLeft=6;spacingTop=3;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="740" y="465" width="250" height="85" as="geometry" />
+        </mxCell>
+
+        <!-- ========== EXECUTE ========== -->
+        <mxCell id="execute" value="EXECUTE&#xa;执行 Skill" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="540" y="590" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="execute-desc" value="• 遍历 skill_plan[]&#xa;• 对每个 Skill:&#xa;  1. 加载 manifest + prompt + schema&#xa;  2. 加载 Skills Reference&#xa;  3. 注入 retrieval_results&#xa;  4. 调用 LLM&#xa;  5. 解析 JSON 输出&#xa;  6. 校验 schema" style="text;html=1;align=left;fontSize=13;fillColor=#f0fff0;strokeColor=#ddd;rounded=1;spacingLeft=6;spacingTop=3;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="740" y="570" width="230" height="115" as="geometry" />
+        </mxCell>
+
+        <!-- ========== SELFCHECK ========== -->
+        <mxCell id="selfcheck" value="SELFCHECK&#xa;质量自检" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=13;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="540" y="700" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="selfcheck-desc" value="• 检查引用完整性&#xa;• 检查结构合规性&#xa;• 检查逻辑一致性&#xa;• 检查是否答非所问" style="text;html=1;align=left;fontSize=13;fillColor=#fef2f2;strokeColor=#ddd;rounded=1;spacingLeft=6;spacingTop=3;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="740" y="700" width="200" height="65" as="geometry" />
+        </mxCell>
+
+        <!-- 条件分支: 自检是否通过 -->
+        <mxCell id="cond-retry" value="passed?&#xa;&amp;&amp; count &lt; N?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="545" y="800" width="140" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- 重试箭头 -->
+        <mxCell id="retry-label" value="不合格&#xa;重试" style="text;html=1;fontSize=13;fillColor=none;strokeColor=none;fontColor=#b85450;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="370" y="700" width="50" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- ========== FINALIZE ========== -->
+        <mxCell id="finalize" value="FINALIZE&#xa;汇总输出" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="540" y="910" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="finalize-desc" value="• 合并所有 skill_outputs&#xa;• 生成 Markdown 格式回答&#xa;• 附加 citations 列表&#xa;• 标注 confidence 级别&#xa;• 调用 TraceStore 落盘" style="text;html=1;align=left;fontSize=13;fillColor=#f0f4ff;strokeColor=#ddd;rounded=1;spacingLeft=6;spacingTop=3;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="740" y="895" width="220" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- END -->
+        <mxCell id="end" value="" style="ellipse;whiteSpace=wrap;html=1;fillColor=#333;strokeColor=#333;" vertex="1" parent="1">
+          <mxGeometry x="748" y="935" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="end-outer" value="" style="ellipse;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#333;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="743" y="930" width="40" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- ========== 所有边 ========== -->
+        <mxCell id="e-start" style="strokeColor=#333;strokeWidth=2;" edge="1" source="start" target="intake" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-intake-route" style="strokeColor=#333;strokeWidth=2;" edge="1" source="intake" target="route" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-route-cond" style="strokeColor=#333;strokeWidth=2;" edge="1" source="route" target="cond-askback" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 条件边: askback -->
+        <mxCell id="e-cond-askback" value="Yes" style="strokeColor=#d6b656;strokeWidth=2;fontStyle=1;fontSize=12;fontColor=#333333;" edge="1" source="cond-askback" target="askback" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-askback-end" style="strokeColor=#b85450;strokeWidth=2;" edge="1" source="askback" target="end-askback" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-user-reply" style="strokeColor=#9673a6;strokeWidth=1;dashed=1;" edge="1" source="user-reply" target="intake" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="160" y="480" />
+              <mxPoint x="160" y="170" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 条件边: retrieve -->
+        <mxCell id="e-cond-retrieve" value="No" style="strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;fontColor=#333333;" edge="1" source="cond-askback" target="retrieve" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e-retrieve-execute" style="strokeColor=#333;strokeWidth=2;" edge="1" source="retrieve" target="execute" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-execute-selfcheck" style="strokeColor=#333;strokeWidth=2;" edge="1" source="execute" target="selfcheck" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-selfcheck-cond" style="strokeColor=#333;strokeWidth=2;" edge="1" source="selfcheck" target="cond-retry" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 条件边: 重试 -->
+        <mxCell id="e-retry" value="不合格 &amp; 次数 &lt; N" style="strokeColor=#b85450;strokeWidth=2;fontStyle=1;fontSize=12;fontColor=#333333;" edge="1" source="cond-retry" target="execute" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="420" y="835" />
+              <mxPoint x="420" y="620" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 条件边: finalize -->
+        <mxCell id="e-cond-finalize" value="合格 或 达到上限" style="strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;fontColor=#333333;" edge="1" source="cond-retry" target="finalize" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e-finalize-end" style="strokeColor=#333;strokeWidth=2;" edge="1" source="finalize" target="end-outer" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 状态说明框 -->
+        <mxCell id="state-box" value="AgentState 关键字段&#xa;─────────────────&#xa;thread_id, request_id&#xa;user_query, messages[]&#xa;intent, intent_detail&#xa;skill_plan[]&#xa;needs_askback, askback_questions[]&#xa;retrieval_results[]&#xa;skill_outputs[]&#xa;selfcheck_passed, selfcheck_count&#xa;final_markdown, final_citations[]&#xa;confidence, audit_log[]" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;size=14;fillColor=#ffffcc;strokeColor=#d6b656;fontSize=13;align=left;spacingLeft=8;verticalAlign=top;spacingTop=18;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="1020" y="120" width="230" height="210" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

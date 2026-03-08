@@ -1,0 +1,210 @@
+<mxfile host="app.diagrams.net" modified="2026-03-04T00:00:00.000Z" agent="Claude" version="21.0.0" type="device">
+  <diagram id="pipeline-flow" name="Content Pipeline 处理流程">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="1600" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- 标题 -->
+        <mxCell id="title" value="Content Processing Pipeline — 处理流程图" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=22;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="400" y="20" width="400" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- ========== 输入源 ========== -->
+        <mxCell id="input-label" value="输入源" style="text;html=1;align=center;fontSize=14;fontStyle=1;fillColor=none;strokeColor=none;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="560" y="70" width="80" height="25" as="geometry" />
+        </mxCell>
+
+        <mxCell id="src-pdf" value="📄 PDF 文件" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="200" y="100" width="130" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="src-text" value="📝 Text/Markdown" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="380" y="100" width="140" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="src-audio" value="🎵 音频文件" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="570" y="100" width="130" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="src-video" value="🎬 视频 URL" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="750" y="100" width="130" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- ========== Step 1: EXTRACT ========== -->
+        <mxCell id="step1-bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="120" y="180" width="960" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="step1-label" value="Step 1: EXTRACT — 提取原始文本" style="text;html=1;align=left;fontSize=14;fontStyle=1;fillColor=none;strokeColor=none;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="140" y="185" width="350" height="25" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ext-pdf" value="PDFExtractor&#xa;(pdfplumber)&#xa;&#xa;• 逐页提取文本&#xa;• 提取元数据(标题/作者/页数)&#xa;• 保留页码标记 [Page N]" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF8E6;strokeColor=#d6b656;fontSize=13;align=left;spacingLeft=8;verticalAlign=top;spacingTop=5;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="140" y="220" width="180" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="ext-text" value="TextExtractor&#xa;&#xa;• 直接读取 .txt/.md&#xa;• 提取文件元数据&#xa;• 检测编码" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF8E6;strokeColor=#d6b656;fontSize=13;align=left;spacingLeft=8;verticalAlign=top;spacingTop=5;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="340" y="220" width="170" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="ext-audio" value="AudioExtractor&#xa;&#xa;→ WhisperTranscriber&#xa;&#xa;• 加载 faster-whisper 模型&#xa;• VAD 过滤静音段&#xa;• 返回文本 + 时间戳分段&#xa;• 自动语言检测" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF8E6;strokeColor=#d6b656;fontSize=13;align=left;spacingLeft=8;verticalAlign=top;spacingTop=5;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="530" y="220" width="180" height="140" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ext-video-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fce5cd;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="730" y="220" width="330" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="ext-video-label" value="VideoExtractor" style="text;html=1;align=left;fontSize=13;fontStyle=1;fillColor=none;strokeColor=none;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="740" y="225" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="vd-download" value="① VideoDownloader&#xa;(yt-dlp)&#xa;下载音频轨" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF8E6;strokeColor=#d6b656;fontSize=13;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="745" y="250" width="130" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="vd-transcribe" value="② WhisperTranscriber&#xa;音频 → 文本" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF8E6;strokeColor=#d6b656;fontSize=13;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="745" y="310" width="130" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="vd-meta" value="③ 提取元数据&#xa;标题/作者/时长/平台" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF8E6;strokeColor=#d6b656;fontSize=13;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="895" y="250" width="150" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="vd-arrow1" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#666;" edge="1" source="vd-download" target="vd-transcribe" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 输出: ExtractedContent -->
+        <mxCell id="extracted" value="ExtractedContent&#xa;{ text, metadata, raw_path }" style="shape=document;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=0.27;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="470" y="410" width="250" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- 箭头: 提取器 → ExtractedContent -->
+        <mxCell id="a1" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#666;" edge="1" source="ext-pdf" target="extracted" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a2" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#666;" edge="1" source="ext-text" target="extracted" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a3" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#666;" edge="1" source="ext-audio" target="extracted" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a4" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#666;" edge="1" source="ext-video-box" target="extracted" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ========== Step 2: STRUCTURE ========== -->
+        <mxCell id="step2-bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="200" y="500" width="800" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="step2-label" value="Step 2: STRUCTURE — LLM 结构化理解" style="text;html=1;align=left;fontSize=14;fontStyle=1;fillColor=none;strokeColor=none;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="220" y="505" width="400" height="25" as="geometry" />
+        </mxCell>
+
+        <mxCell id="structurer" value="LLMStructurer&#xa;(调度器)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3E8FF;strokeColor=#9673a6;fontSize=13;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="230" y="545" width="120" height="45" as="geometry" />
+        </mxCell>
+
+        <mxCell id="proc-generic" value="GenericProcessor&#xa;通用内容分析" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3E8FF;strokeColor=#9673a6;fontSize=13;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="400" y="540" width="130" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="proc-fp" value="FirstPrinciplesProcessor&#xa;第一性原理专用" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3E8FF;strokeColor=#9673a6;fontSize=13;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="560" y="540" width="150" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="proc-gt" value="GameTheoryProcessor&#xa;博弈论专用" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3E8FF;strokeColor=#9673a6;fontSize=13;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="740" y="540" width="140" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="llm-call" value="☁️ 调用 LLM (GPT-4o / Qwen)&#xa;发送 analysis_prompt + 原始文本&#xa;要求 JSON 格式输出" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=13;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="400" y="595" width="240" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="struct-output" value="StructuredContent&#xa;{ concepts, methodology,&#xa;  examples, key_quotes, summary }" style="shape=document;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=0.25;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="680" y="600" width="250" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="s2a1" style="strokeColor=#666;" edge="1" source="structurer" target="proc-generic" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="s2a2" style="strokeColor=#666;" edge="1" source="structurer" target="proc-fp" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="s2a3" style="strokeColor=#666;" edge="1" source="structurer" target="proc-gt" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="s2a4" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#666;" edge="1" source="llm-call" target="struct-output" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ========== Step 3: ENRICH ========== -->
+        <mxCell id="step3" value="Step 3: ENRICH — 元数据增强&#xa;&#xa;MetadataEnricher&#xa;• 生成 source_id (唯一标识)&#xa;• 提取主题标签 (topics)&#xa;• 关联 Skills (applicable_skills)&#xa;• 标注可信度 (credibility)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;align=left;spacingLeft=10;verticalAlign=top;spacingTop=8;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="350" y="710" width="260" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="enrich-output" value="EnrichedMetadata&#xa;{ source_id, topics,&#xa;  applicable_skills, ... }" style="shape=document;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=0.25;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="660" y="740" width="220" height="55" as="geometry" />
+        </mxCell>
+
+        <mxCell id="s3a1" style="strokeColor=#666;" edge="1" source="step3" target="enrich-output" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ========== Step 4: CHUNK ========== -->
+        <mxCell id="step4" value="Step 4: CHUNK — 文本切片&#xa;&#xa;TextChunker&#xa;• chunk_size: 500 字&#xa;• overlap: 50 字&#xa;• 在句号/换行处断开&#xa;• 生成 chunk_id: {source_id}#c{N}" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;align=left;spacingLeft=10;verticalAlign=top;spacingTop=8;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="200" y="880" width="260" height="120" as="geometry" />
+        </mxCell>
+
+        <!-- ========== Step 5: EMBED ========== -->
+        <mxCell id="step5" value="Step 5: EMBED — 向量化&#xa;&#xa;EmbeddingGenerator&#xa;• 模型: BAAI/bge-small-zh-v1.5&#xa;• L2 归一化&#xa;• batch_size: 32" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;align=left;spacingLeft=10;verticalAlign=top;spacingTop=8;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="520" y="880" width="240" height="120" as="geometry" />
+        </mxCell>
+
+        <!-- ========== Step 6: STORE ========== -->
+        <mxCell id="step6-bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="150" y="1050" width="900" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="step6-label" value="Step 6: STORE — 分层存储 (ContentStore)" style="text;html=1;align=left;fontSize=14;fontStyle=1;fillColor=none;strokeColor=none;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="170" y="1055" width="400" height="25" as="geometry" />
+        </mxCell>
+
+        <mxCell id="store-raw2" value="📁 raw/&#xa;原始文件存储" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;fillColor=#F5F5F5;strokeColor=#666;fontSize=13;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="180" y="1095" width="120" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="store-json2" value="📁 structured/&#xa;JSON 序列化" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;fillColor=#F5F5F5;strokeColor=#666;fontSize=13;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="340" y="1095" width="120" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="store-md2" value="📁 references/&#xa;Markdown 文档&#xa;(MarkdownRenderer)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;fillColor=#F5F5F5;strokeColor=#666;fontSize=13;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="500" y="1095" width="150" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="store-vec2" value="🔍 vector/&#xa;Chroma 向量索引&#xa;(ChromaVectorStore)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="700" y="1095" width="150" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="store-result" value="✅ ProcessingResult" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="890" y="1115" width="140" height="35" as="geometry" />
+        </mxCell>
+
+        <!-- 主流程箭头 -->
+        <mxCell id="flow1" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#333;strokeWidth=2;" edge="1" source="extracted" target="step2-bg" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="flow2" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#333;strokeWidth=2;" edge="1" source="struct-output" target="step3" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="flow3" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#333;strokeWidth=2;" edge="1" source="step3" target="step4" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="flow4" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#333;strokeWidth=2;" edge="1" source="step4" target="step5" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="flow5" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#333;strokeWidth=2;" edge="1" source="step5" target="step6-bg" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 输入源到 Step 1 -->
+        <mxCell id="in1" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#999;dashed=1;" edge="1" source="src-pdf" target="ext-pdf" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="in2" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#999;dashed=1;" edge="1" source="src-text" target="ext-text" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="in3" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#999;dashed=1;" edge="1" source="src-audio" target="ext-audio" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="in4" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#999;dashed=1;" edge="1" source="src-video" target="ext-video-box" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
